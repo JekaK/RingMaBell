@@ -13,19 +13,60 @@ Fail-safe C++17 сервер для шкільних дзвоників і сп�
 - Стан повітряної тривоги: `data/air_alert_state.conf`.
 - Логи: `logs/ringmabell.log` і `journalctl -u ringmabell`.
 
-## Встановлення На Linux
+## Встановлення На Чистий Linux
 
-Рекомендовано Ubuntu Server або Debian без GUI.
+Рекомендовано Ubuntu Server або Debian без GUI. Найпростіший шлях для чистого ноутбука: встановити мінімум для завантаження bootstrap-скрипта, а далі скрипт сам поставить `git`, C++ toolchain, `cmake`, `mpg123`, ALSA-утиліти, склонує репозиторій, збере сервер і встановить `systemd` service.
+
+Якщо `sudo` ще не налаштований, зайдіть під `root` через `su -` і запускайте ті самі команди без `sudo`.
 
 ```bash
 sudo apt update
-sudo apt install -y build-essential cmake mpg123 curl alsa-utils
+sudo apt install -y ca-certificates curl
+curl -fsSL https://raw.githubusercontent.com/JekaK/RingMaBell/master/scripts/bootstrap-linux.sh -o /tmp/ringmabell-bootstrap.sh
+sudo bash /tmp/ringmabell-bootstrap.sh
 ```
 
-Збірка:
+Bootstrap-скрипт робить таке:
+
+- ставить пакети `ca-certificates`, `curl`, `sudo`, `tzdata`, `git`, `build-essential`, `cmake`, `pkg-config`, `mpg123`, `alsa-utils`;
+- за можливості вмикає `systemd-timesyncd`, щоб годинник був точний після вимкнення світла;
+- виставляє timezone `Europe/Kyiv`;
+- клонує репозиторій у `/opt/ringmabell-src`;
+- збирає C++ binary;
+- встановлює сервіс у `/opt/ringmabell`;
+- створює й запускає `ringmabell.service`.
+
+Після цього покладіть MP3-файли в `/opt/ringmabell/sounds/`:
+
+```text
+lesson-start.mp3
+lesson-end.mp3
+air-alert-start.mp3
+air-alert-end.mp3
+```
+
+Права на файли після копіювання:
+
+```bash
+sudo chown ringmabell:ringmabell /opt/ringmabell/sounds/*.mp3
+sudo systemctl restart ringmabell
+```
+
+Перегляд статусу:
+
+```bash
+sudo systemctl status ringmabell
+sudo journalctl -u ringmabell -f
+```
+
+## Ручне Встановлення З Уже Клонованої Репи
+
+Якщо репозиторій уже є на машині:
 
 ```bash
 cd /path/to/RingMaBell
+sudo apt update
+sudo apt install -y ca-certificates curl sudo tzdata git build-essential cmake pkg-config mpg123 alsa-utils
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
