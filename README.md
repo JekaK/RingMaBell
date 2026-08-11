@@ -19,12 +19,25 @@ Fail-safe C++17 сервер для шкільних дзвоників і сп�
 
 Якщо `sudo` ще не налаштований, зайдіть під `root` через `su -` і запускайте ті самі команди без `sudo`.
 
+Оскільки репозиторій приватний, пароль GitHub не потрібен і не підійде. Найпростіше створити fine-grained Personal Access Token з доступом тільки до `JekaK/RingMaBell` і правом `Contents: Read-only`.
+
+Після цього на чистому ноутбуці:
+
 ```bash
 sudo apt update
 sudo apt install -y ca-certificates curl
-curl -fsSL https://raw.githubusercontent.com/JekaK/RingMaBell/master/scripts/bootstrap-linux.sh -o /tmp/ringmabell-bootstrap.sh
-sudo bash /tmp/ringmabell-bootstrap.sh
+read -rsp "GitHub token: " GITHUB_TOKEN
+echo
+curl -fsSL \
+  -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+  -H "Accept: application/vnd.github.raw" \
+  "https://api.github.com/repos/JekaK/RingMaBell/contents/scripts/bootstrap-linux.sh?ref=master" \
+  -o /tmp/ringmabell-bootstrap.sh
+sudo GITHUB_TOKEN="${GITHUB_TOKEN}" bash /tmp/ringmabell-bootstrap.sh
+unset GITHUB_TOKEN
 ```
+
+Якщо `sudo` не пропустить змінну `GITHUB_TOKEN`, запустіть `sudo bash /tmp/ringmabell-bootstrap.sh` і вставте токен ще раз, коли скрипт попросить його для `git clone`.
 
 Bootstrap-скрипт робить таке:
 
