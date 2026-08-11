@@ -1,0 +1,13 @@
+id,days,time,sound,enabled,description
+lesson_1_start,weekdays,08:30,sounds/lesson-start.mp3,true,Lesson 1 start
+lesson_1_end,weekdays,09:15,sounds/lesson-end.mp3,true,Lesson 1 end
+lesson_2_start,weekdays,09:25,sounds/lesson-start.mp3,true,Lesson 2 start
+lesson_2_end,weekdays,10:10,sounds/lesson-end.mp3,true,Lesson 2 end
+lesson_3_start,weekdays,10:25,sounds/lesson-start.mp3,true,Lesson 3 start
+lesson_3_end,weekdays,11:10,sounds/lesson-end.mp3,true,Lesson 3 end
+lesson_4_start,weekdays,11:25,sounds/lesson-start.mp3,true,Lesson 4 start
+lesson_4_end,weekdays,12:10,sounds/lesson-end.mp3,true,Lesson 4 end
+lesson_5_start,weekdays,12:25,sounds/lesson-start.mp3,true,Lesson 5 start
+lesson_5_end,weekdays,13:10,sounds/lesson-end.mp3,true,Lesson 5 end
+lesson_6_start,weekdays,13:20,sounds/lesson-start.mp3,true,Lesson 6 start
+lesson_6_end,weekdays,14:05,sounds/lesson-end.mp3,true,Lesson 6 end
